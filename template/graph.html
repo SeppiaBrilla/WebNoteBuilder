@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{VAULT_NAME} graph</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="js/graphData.js"></script>
+    <script src="js/functions.js"></script>
+</head>
+<body class="dark-theme-bg">
+    <div id="Content" class='graph-page'>
+        <nav class="dark-theme-color center">
+                <h1>{VAULT_NAME} graph</h1> 
+                <a href="{HOMEURL}"><i class="fas fa-home icon dark-theme-color"></i></a>
+                <button id="toggle-button" onclick="GraphTheme()"><i class="fas fa-adjust icon dark-theme-color"></i></button>
+        </nav>
+        <div class="main dark-theme-color center">
+            <div id="graph-container" class='graph'></div>
+        </div>
+    </div>
+</body>
+
+<script src="js/graph.js"></script>
+</html>
+

@@ -1,0 +1,7 @@
+{
+    "OutputFolder": "./prova",
+    "BaseUrl": "../index.html",
+    "VaultName":"University notes",
+    "InputFolder":"../../University/University-notes/",
+    "FolderToExclude":["imgs", ".git", "exams"]
+}

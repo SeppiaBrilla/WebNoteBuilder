@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/files.js"></script>
+    <script src="js/functions.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <title>{VAULT_NAME}</title>
+</head>
+<body class="dark-theme-bg">
+    <div id="Content" class="content">
+        <div class="dark-theme-color center">
+                <h1>{VAULT_NAME}</h1>
+        </div>
+        <nav>
+            <input type="text" id="search" class="search-bar dark-theme-bg dark-theme-color" placeholder="Search..." oninput="LoadFiles(this.value)">
+            <button onclick="ThemeFn()"><i class="fas fa-adjust icon dark-theme-color"></i></button>
+            <a href='graph.html'><i class="fa fa-code-fork icon dark-theme-color"></i></a>
+        </nav>
+        <div class="main dark-theme-color">
+            <h2 class="dark-theme-color">Note list:</h2>
+            <ul id="notes" class="main-note-list">
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById("search").value = "";
+        LoadFiles("");
+    </script>
+</body>
+</html>

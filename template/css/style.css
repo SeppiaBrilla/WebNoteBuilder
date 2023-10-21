@@ -1,0 +1,109 @@
+ .content {
+    font-family: Arial, sans-serif;
+    margin: auto;
+    padding: 0;
+    max-width: 674px;
+}
+
+.dark-theme-bg{
+    background-color: #1e1e1e;
+} 
+
+.light-theme-bg{
+ background-color: white;
+}
+
+.dark-theme-color{
+    color: white;
+}
+
+.light-theme-color{
+    color: black;
+}
+
+header {
+    text-align: center;
+    padding: 20px;
+}
+
+nav {
+    padding: 10px;
+    text-align: center;
+    border-top: solid grey 1px;
+    border-bottom: solid grey 1px;
+    justify-content: space-between;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+nav button {
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    background: none;
+    cursor: pointer;
+}
+
+nav a {
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    background: none;
+    cursor: pointer;
+    text-decoration: none;
+    color:inherit;
+}
+.icon {
+    font-size: 18px;
+}
+
+.main {
+    padding: 20px;
+}
+
+.search-bar {
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    padding: 1.5%;
+    width: 60%;
+}
+.search-bar:focus{
+    outline: none;
+}
+
+.center{
+    text-align: center;
+}
+
+.main-note-list {
+    list-style-type: none;
+    font-size: 24px;
+}
+
+.note-folder{
+    padding: 2%;
+    border-top: 1px solid grey;
+}
+.note-item{
+    padding: 2%;
+}
+
+.link{
+    text-decoration: none;
+    color: inherit;
+}
+
+.graph-page{
+    width: 100%;
+    height: 100vh;
+}
+
+.graph{
+    width: 100%;
+    height: 80vh;
+}
