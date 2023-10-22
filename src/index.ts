@@ -45,7 +45,7 @@ function CreateNotes(notes:NoteAndBuilder, config:any){
                 note_template.replaceAll('{TITLE}', currentFile.NoteName).replaceAll('{TEXT}', currentFile.Content));
         }else if(typeof currentFile === "string"){
             try{
-                const dest = currentFile.replaceAll(" ","_").replaceAll("..","").replaceAll("/","_");
+                const dest = currentFile.replaceAll(" ","_").replaceAll(config.InputFolder,"").replaceAll("/","_");
                 copyFileSync(currentFile, join(config.OutputFolder,"notes", dest));
             }catch{}
         }
@@ -58,17 +58,20 @@ function CreateGraph(notes:NoteAndBuilder, config:any){
     graph_html = graph_html.replaceAll('{HOMEURL}', './index.html');
     writeFileSync(join(config.OutputFolder, 'graph.html'), graph_html);
     const graph = notes.Builder.GetGraph();
-    const nodes = JSON.stringify(graph.Nodes.map(x => { 
-        const file = notes.Notes[x];
+    const nodes = JSON.stringify(graph.Nodes.filter(x => 
+        notes.Notes[x.replaceAll(config.inputFolder,"").replaceAll(" ", "_").replaceAll("/","_")] !== undefined).map(x => { 
+        const key = x.replaceAll(config.inputFolder,"").replaceAll(" ", "_").replaceAll("/","_");
+        const file = notes.Notes[key];
         if(file instanceof Note)
-            return { 'id': "notes/" + file.FileName + '.html', 'name': x }
-        return {};
+            return { 'id': join("notes", file.FileName + '.html'), 'name': file.NoteName }
     }));
-    const edges = JSON.stringify(graph.Edges.map(x => { 
+    const edges = JSON.stringify(graph.Edges.filter(x =>{
+        return notes.Notes[x.From] !== undefined && notes.Notes[x.To] !== undefined;
+    }).map(x => { 
         const fileSource = notes.Notes[x.From];
         const fileTo = notes.Notes[x.To];
         if(fileSource instanceof Note && fileTo instanceof Note)
-            return { 'source': "notes/" + fileSource.FileName + '.html', 'target': "notes/" + fileTo.FileName + '.html' }
+            return { 'source': join("notes", fileSource.FileName + '.html'), 'target': join("notes", fileTo.FileName + '.html') }
         return {};
     }));
     copyFileSync('./template/js/graph.js', join(config.OutputFolder, 'js', 'graph.js'));
