@@ -5,7 +5,7 @@ function CheckIn(item, query){
 }
 
 function CreateFolder(itemName, subElements){
-    return `<li class='note-folder'><i class='fas fa-folder'></i> ${itemName} <i class='fa fa-angle-down'></i><ul class='main-note-list'>
+    return `<li class='note-folder'><i class='fas fa-folder'></i> ${itemName} <button class='hideButton' id='${itemName}' onclick="collapse(this.id)"><i id='${itemName}-icon' class='fa fa-angle-down'></i></button><ul id='${itemName}-ul' class='main-note-list'>
 ${subElements}
 </ul></li>
 `;
@@ -14,6 +14,20 @@ ${subElements}
 function CreateFile(itemName, link){
     return `<li class='note-item'><i class='fas fa-file'> </i> <a class='link' href='${link}'>${itemName}</a>
 `;
+}
+
+function collapse(name){
+    const ul = document.getElementById(name+'-ul');
+    const icon = document.getElementById(name+'-icon');
+    if(Array.from(ul.classList).includes('hide')){
+        ul.classList.remove('hide');
+        icon.classList.remove('fa-angle-up');
+        icon.classList.add('fa-angle-down');
+    }else{
+        ul.classList.add('hide');
+        icon.classList.remove('fa-angle-down');
+        icon.classList.add('fa-angle-up');
+    }
 }
 
 function CreateEntry(item, query){

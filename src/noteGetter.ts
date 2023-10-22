@@ -17,11 +17,12 @@ export function GetNotes(noteFolder:string, uri:string, folderToExclude:Array<st
     let new_file = "";
     const new_notes: {[noteName:string]: Note|string } = {};
     for(let file of files){
-        if(extname(file) == '.md'){
+        if(extname(file) === '.md'){
             const name = basename(file).replace('.md','');
-            console.log(`analyzing note ${name}`)
+            const fullname = file.replace('.md','').replaceAll(" ", "_").replaceAll("..","").replaceAll("/","_");
+            console.log(`analyzing note ${name} `)
             new_file = builder.AddAndConvert(name, readFileSync(file).toString());
-            new_notes[name] = new Note(name.replaceAll(" ", "_"), new_file);
+            new_notes[fullname] = new Note(fullname, name, new_file);
         }else{
             const name = basename(file).replace(extname(file),'');
             new_notes[name] = file;
@@ -57,10 +58,11 @@ function CreateObsidianLinksFromFolder(folderName:string, baseUri:string, keepSt
             }
             uri += name;
         }else{
-            uri += basename(filename).replace(".md",".html").replaceAll(" ","_");
+            uri += filename.replaceAll("/","_").replaceAll("..","").replaceAll(".md",".html").replaceAll(" ","_");
         }
         if(extname(filename) === ".md") {
             links.push(new ObsidianLink(basename(filename).replace(".md", ""), uri));
+            links.push(new ObsidianLink(filename.replace(".md", ""), uri));
         }else if(extname(filename) === ".png"){
             notlinks.push(new ObsidianLink(basename(filename), uri));
         }
@@ -88,7 +90,7 @@ function GetStructure(currentDirPath:string, links:Array<ObsidianlinkArray>, fol
         const stat = lstatSync(filePath);
         if (stat.isFile() && file[0] != ".") {
             const fileName = file.replace(extname(file), '');
-            files.push({"name":fileName, "folder": [], "link": GetLink(fileName, links)});
+            files.push({"name":fileName, "folder": [], "link": GetLink(filePath.replace(extname(file), ''), fileName, links)});
         } else if (stat.isDirectory() && file[0] != '.' && !folderToExclude.includes(file)) {
             files.push({"name":file, "folder": GetStructure(filePath, links, folderToExclude)})
         }
@@ -96,9 +98,11 @@ function GetStructure(currentDirPath:string, links:Array<ObsidianlinkArray>, fol
     return files;
 }
 
-export function GetLink(filename:string, links:Array<ObsidianlinkArray>){
+export function GetLink(filePath:string, filename:string, links:Array<ObsidianlinkArray>){
     for(let i = 0; i < links.length; i ++){
         const dict = links[i].toDict();
+        if(dict[filePath] !== undefined)
+            return "notes/" + dict[filePath]
         if(dict[filename] !== undefined)
             return "notes/" + dict[filename];
     }

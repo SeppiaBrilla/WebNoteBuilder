@@ -1,6 +1,6 @@
 import { join, basename } from "path";
 import { GetNotes, NoteAndBuilder } from "./noteGetter";
-import { appendFileSync, copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { appendFileSync, copyFileSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import Note from "./note";
 
 function main(): void {
@@ -14,14 +14,11 @@ function main(): void {
 
 function PrepareFolder(config:any, notes:NoteAndBuilder){
     const outputFoler = config.OutputFolder;
-    if(!existsSync(outputFoler))
-        mkdirSync(outputFoler);
-    if(!existsSync(join(outputFoler, "css")))
-        mkdirSync(join(outputFoler, "css"));
-    if(!existsSync(join(outputFoler, "js")))
-        mkdirSync(join(outputFoler, "js"));
-    if(!existsSync(join(outputFoler, "notes")))
-        mkdirSync(join(outputFoler, "notes"));
+    rmSync(outputFoler, {recursive: true, force: true});
+    mkdirSync(outputFoler);
+    mkdirSync(join(outputFoler, "css"));
+    mkdirSync(join(outputFoler, "js"));
+    mkdirSync(join(outputFoler, "notes"));
 
     copyFileSync(join("template","css", "style.css"), join(config.OutputFolder,"css", "style.css"));
     appendFileSync(join(config.OutputFolder,"css", "style.css"), notes.Builder.GetCss())
@@ -45,9 +42,12 @@ function CreateNotes(notes:NoteAndBuilder, config:any){
         const currentFile = notes.Notes[keys[i]];
         if(currentFile instanceof Note){
             writeFileSync(join(config.OutputFolder, "notes", currentFile.FileName + '.html'), 
-                note_template.replaceAll('{TITLE}', keys[i]).replaceAll('{TEXT}', currentFile.Content));
+                note_template.replaceAll('{TITLE}', currentFile.NoteName).replaceAll('{TEXT}', currentFile.Content));
         }else if(typeof currentFile === "string"){
-            copyFileSync(currentFile, join(config.OutputFolder,"notes", basename(currentFile).replaceAll(" ","_")));
+            try{
+                const dest = currentFile.replaceAll(" ","_").replaceAll("..","").replaceAll("/","_");
+                copyFileSync(currentFile, join(config.OutputFolder,"notes", dest));
+            }catch{}
         }
     }
 }
