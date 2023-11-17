@@ -32,6 +32,7 @@ function collapse(name){
 
 function CreateEntry(item, query){
     const itemName = item.name;
+    query = itemName.toLowerCase().includes(query.toLowerCase()) ? '' : query;
     const subElements = FilterFunction(item.folder, query);
     const isFolder = subElements != "";
     if(isFolder)
